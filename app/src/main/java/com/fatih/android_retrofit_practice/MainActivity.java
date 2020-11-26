@@ -5,7 +5,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
 
         textViewResult = findViewById(R.id.text_view_result);
 
+
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://jsonplaceholder.typicode.com/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -39,7 +43,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void getPosts(){
 
-        Call<List<Post>> call = jsonPlaceHolderAPI.getPost();
+        Map<String,String> parameters = new HashMap<>();
+
+        parameters.put("userId","1");
+        parameters.put("_sort","id");
+        parameters.put("_order","desc");
+
+        Call<List<Post>> call = jsonPlaceHolderAPI.getPost(parameters);
 
         call.enqueue(new Callback<List<Post>>() {
             @Override
@@ -73,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void getComments(){
 
-        Call<List<Comment>> call = jsonPlaceHolderAPI.getComments();
+        Call<List<Comment>> call = jsonPlaceHolderAPI.getComments("posts/3/comments");
 
         call.enqueue(new Callback<List<Comment>>() {
             @Override

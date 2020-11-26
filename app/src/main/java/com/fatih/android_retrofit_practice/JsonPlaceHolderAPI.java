@@ -1,18 +1,29 @@
 package com.fatih.android_retrofit_practice;
 
 
-
-
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
+import retrofit2.http.Url;
 
 public interface JsonPlaceHolderAPI {
 
     @GET("posts")
-    Call<List<Post>> getPost();
+    Call<List<Post>> getPost(@Query("userId") Integer[] userId,
+                             @Query ("_sort") String sort,
+                             @Query("_order") String order);
 
-    @GET("posts/2/comments")
-    Call<List<Comment>> getComments();
+    @GET("posts")
+    Call<List<Post>> getPost(@QueryMap Map<String,String> parameters);
+
+    @GET("posts/{id}/comments")
+    Call<List<Comment>> getComments(@Path("id") int id);
+
+    @GET
+    Call<List<Comment>> getComments(@Url String url);
 }
